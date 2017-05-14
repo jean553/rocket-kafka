@@ -1,4 +1,12 @@
 language: rust
+
+services:
+    - docker
+
+before_install:
+    - docker pull jean553/docker-kafka
+    - docker run -d --name docker-kafka jean553/docker-kafka
+
 rust:
     - nightly
 
