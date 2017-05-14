@@ -6,3 +6,4 @@ authors = ["Jean.LELIEVRE@supinfo.com"]
 [dependencies]
 rocket = "0.2.6"
 rocket_codegen = "0.2.6"
+kafka = "0.6"
