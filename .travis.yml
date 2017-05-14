@@ -7,8 +7,6 @@ before_script:
 
 script:
     - cargo build --bin rocket-kafka
-    - cargo build --bin tests
     - cargo run --bin rocket-kafka & echo $! > /tmp/service.pid 
     - sleep 5 # let some time for the service to start
-    - cargo run --bin tests
     - kill "$(cat /tmp/service.pid)"
