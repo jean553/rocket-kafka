@@ -1,1 +1,4 @@
 .vagrant/*
+rocket-kafka/src/bin
+rocket-kafka/target
+rocket-kafka/Cargo.lock

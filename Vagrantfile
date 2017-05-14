@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby ts=2 sw=2 expandtab :
 
-PROJECT = "rocker-kafka"
+PROJECT = "rocket-kafka"
 HOME_DIRECTORY = "/home/vagrant"
 PROJECT_DIRECTORY = "#{HOME_DIRECTORY}/#{PROJECT}"
 
@@ -9,7 +9,7 @@ DOCKER_ENV = {
   "HOST_USER_UID" => Process.euid,
   "HOME_DIRECTORY" => "#{HOME_DIRECTORY}",
   "PROJECT_DIRECTORY" => "#{PROJECT_DIRECTORY}",
-  "APP_PATH" => "#{PROJECT_DIRECTORY}/rocker-kafka",
+  "APP_PATH" => "#{PROJECT_DIRECTORY}/rocket-kafka",
 }
 
 ENV['VAGRANT_NO_PARALLEL'] = 'yes'

@@ -3,12 +3,10 @@ rust:
     - nightly
 
 before_script:
-    - cd rocker-kafka/ 
+    - cd rocket-kafka/ 
 
 script:
-    - cargo build --bin rocker-kafka
-    - cargo build --bin tests
-    - cargo run --bin rocker-kafka & echo $! > /tmp/service.pid 
+    - cargo build --bin rocket-kafka
+    - cargo run --bin rocket-kafka & echo $! > /tmp/service.pid 
     - sleep 5 # let some time for the service to start
-    - cargo run --bin tests
     - kill "$(cat /tmp/service.pid)"
