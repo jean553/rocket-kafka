@@ -5,23 +5,34 @@ extern crate rocket;
 extern crate kafka;
 
 use std::time::Duration;
+use std::error::Error;
 
 use kafka::producer::{Producer, Record, RequiredAcks};
+use kafka::error::Error as KafkaError;
 
-#[post("/message/<message>")]
-fn message(message: &str) -> &'static str {
-
+fn send_message(message: &str) -> Result<(), KafkaError>
+{
     let kafka_server = "rocket-kafka_kafka:9092";
     let topic = "topic";
 
-    let producer = Producer::from_hosts(vec![kafka_server.to_owned()])
+    let mut producer = try!(Producer::from_hosts(vec![kafka_server.to_owned()])
         .with_ack_timeout(Duration::from_secs(5))
         .with_required_acks(RequiredAcks::One)
-        .create();
+        .create());
 
-    producer.send(&Record::from_value(topic, message));
+    try!(producer.send(&Record::from_value(topic, message)));
 
-    return "OK";
+    Ok(())
+}
+
+#[post("/message/<message>")]
+fn message(message: &str) -> &str {
+
+    if let Err(error) = send_message(message) {
+        println!("{}", error);
+    }
+
+    "OK"
 }
 
 fn main() {
