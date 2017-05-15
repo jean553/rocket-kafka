@@ -5,7 +5,6 @@ extern crate rocket;
 extern crate kafka;
 
 use std::time::Duration;
-use std::error::Error;
 
 use kafka::producer::{Producer, Record, RequiredAcks};
 use kafka::error::Error as KafkaError;
