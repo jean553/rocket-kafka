@@ -32,6 +32,7 @@ Vagrant.configure(2) do |config|
       d.name = "#{PROJECT}_dev"
       d.has_ssh = true
       d.env = DOCKER_ENV
+      d.link "#{PROJECT}_kafka:kafka"
       d.volumes =  [
         "#{ENV['PWD']}/:#{PROJECT_DIRECTORY}",
       ]
