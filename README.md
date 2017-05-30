@@ -22,6 +22,13 @@ cargo run
 
 ## Create a Kafka topic
 
+Connect to the Kafka container:
+
+```bash
+docker exec -it rocket-kafka_kafka /bin/bash
+cd /opt/kafka_2.11-0.10.2.0
+```
+
 ```bash
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
 ```
