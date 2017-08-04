@@ -6,28 +6,29 @@ extern crate kafka;
 
 use std::time::Duration;
 
+use rocket::State;
+
 use kafka::producer::{Producer, Record, RequiredAcks};
 use kafka::error::Error as KafkaError;
 
-fn send_message(message: &str) -> Result<(), KafkaError>
+fn send_message(
+    mut producer: State<Producer>,
+    message: &str
+) -> Result<(), KafkaError>
 {
-    let kafka_server = "rocket-kafka_kafka:9092";
     let topic = "topic";
-
-    let mut producer = try!(Producer::from_hosts(vec![kafka_server.to_owned()])
-        .with_ack_timeout(Duration::from_secs(5))
-        .with_required_acks(RequiredAcks::One)
-        .create());
-
     try!(producer.send(&Record::from_value(topic, message)));
 
     Ok(())
 }
 
 #[post("/message/<message>")]
-fn message(message: &str) -> &str {
+fn message<'a>(
+    mut producer: State<Producer>,
+    message: &'a str
+) -> &'a str {
 
-    if let Err(error) = send_message(message) {
+    if let Err(error) = send_message(producer, message) {
         println!("{}", error);
     }
 
@@ -36,8 +37,17 @@ fn message(message: &str) -> &str {
 
 fn main() {
 
+    let kafka_server = "rocket-kafka_kafka:9092";
+
+    let mut producer = Producer::from_hosts(vec![kafka_server.to_owned()])
+        .with_ack_timeout(Duration::from_secs(5))
+        .with_required_acks(RequiredAcks::One)
+        .create()
+        .unwrap();
+
     rocket::ignite().mount(
         "/api/1",
         routes![message]
-    ).launch();
+    ).manage(producer)
+    .launch();
 }
