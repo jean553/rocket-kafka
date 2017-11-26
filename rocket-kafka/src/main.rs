@@ -9,7 +9,7 @@ use std::time::Duration;
 use kafka::producer::{Producer, Record, RequiredAcks};
 use kafka::error::Error as KafkaError;
 
-fn send_message(message: &str) -> Result<(), KafkaError>
+fn send_message(message: String) -> Result<(), KafkaError>
 {
     let kafka_server = "rocket-kafka_kafka:9092";
     let topic = "topic";
@@ -25,7 +25,7 @@ fn send_message(message: &str) -> Result<(), KafkaError>
 }
 
 #[post("/message/<message>")]
-fn message(message: &str) -> &str {
+fn message<'r>(message: String) -> &'r str {
 
     if let Err(error) = send_message(message) {
         println!("{}", error);
